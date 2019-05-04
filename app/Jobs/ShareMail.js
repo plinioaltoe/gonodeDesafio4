@@ -8,11 +8,14 @@ class ShareMail {
   }
 
   static get key () {
-    return 'SignupMail-job'
+    return 'ShareMail-job'
   }
 
   async handle ({ titulo, localizacao, dataEvento, horario, email }) {
-    console.log(`Job: ${ShareMail.key}`)
+    console.log(
+      `Job: ${ShareMail.key},
+      ${titulo}, ${localizacao}, ${dataEvento}, ${horario}, ${email}`
+    )
     await Mail.send(
       ['emails.share'],
       {
@@ -24,8 +27,8 @@ class ShareMail {
       message => {
         message
           .to(email)
-          .from('faleconosco@meetapp.com.br', 'Sistema de Meetups | Meetapp')
-          .subject('Inscrição realizada com sucesso')
+          .from('faleconosco@desafio4.com.br', 'Calendário')
+          .subject('Evento compartihado')
       }
     )
   }

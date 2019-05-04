@@ -4,8 +4,14 @@
 const Model = use('Model')
 
 class Calendario extends Model {
-  user () {
+  owner () {
     return this.belongsTo('App/Models/User')
+  }
+
+  users () {
+    return this.belongsToMany('App/Models/User')
+      .pivotTable('user_calendario')
+      .pivotModel('App/Models/UserCalendario')
   }
 }
 

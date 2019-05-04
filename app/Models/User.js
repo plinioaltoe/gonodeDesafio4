@@ -14,12 +14,25 @@ class User extends Model {
     })
   }
 
+  static get traits () {
+    return [
+      '@provider:Adonis/Acl/HasRole',
+      '@provider:Adonis/Acl/HasPermission'
+    ]
+  }
+
   tokens () {
     return this.hasMany('App/Models/Token')
   }
 
-  calendario () {
+  own () {
     return this.hasMany('App/Models/Calendario')
+  }
+
+  calendarios () {
+    return this.belongsToMany('App/Models/Calendario')
+      .pivotTable('user_calendario')
+      .pivotModel('App/Models/UserCalendario')
   }
 }
 

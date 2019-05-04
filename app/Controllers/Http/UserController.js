@@ -3,23 +3,42 @@
 const User = use('App/Models/User')
 
 class UserController {
-  async index ({ request, response, view }) {}
+  async index () {
+    const user = await User.query()
+      .with('own')
+      .fetch()
 
-  async create ({ request, response, view }) {}
+    return user
+  }
 
-  async store ({ request, response }) {
+  async store ({ request }) {
     const data = request.only(['username', 'email', 'password'])
     const user = await User.create(data)
     return user
   }
 
-  async show ({ params, request, response, view }) {}
+  async show ({ params }) {
+    const user = await User.findOrFail(params.id)
+    await user.load('own')
+    return user
+  }
 
-  async edit ({ params, request, response, view }) {}
+  async update ({ params, request }) {
+    const user = await User.findOrFail(params.id)
+    const data = request.only(['username', 'password', 'password_confirmation'])
 
-  async update ({ params, request, response }) {}
+    user.merge(data)
 
-  async destroy ({ params, request, response }) {}
+    await user.save()
+
+    return user
+  }
+
+  async destroy ({ params }) {
+    const user = await User.findOrFail(params.id)
+
+    await user.delete()
+  }
 }
 
 module.exports = UserController
